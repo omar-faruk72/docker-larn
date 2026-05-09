@@ -12,40 +12,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Code checkout
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: Setup Node.js (Docker-এর বাইরে দ্রুত লিন্টিং ও টাইপ চেকের জন্য)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20" # LTS ভার্সন ব্যবহার করা নিরাপদ
+          node-version: "20"
           cache: "npm"
 
-      # Step 3: Dependencies install
       - name: Install dependencies
         run: npm ci
 
-      # Step 4: ESLint check (Code style & rules)
       - name: Run ESLint
         run: npm run lint
 
-      # Step 5: TypeScript check (Type safety check)
       - name: TypeScript type check
         run: npx tsc --noEmit
 
-      # Step 6: Build with Docker Compose (Docker কনফিগারেশন চেক)
-      # এটি নিশ্চিত করবে আপনার Dockerfile এবং docker-compose.yml-এ কোনো ভুল নেই
+      # Step 6: এখানে docker-compose এর বদলে docker compose ব্যবহার করুন
       - name: Build with Docker Compose
-        run: docker-compose build
+        run: docker compose build
 
-      # Step 7: Run Unit Tests inside Docker (যদি টেস্ট থাকে)
-      # 'app' এর জায়গায় আপনার docker-compose-এর সার্ভিস নামটি দিন
+      # Step 7: এখানেও docker-compose এর বদলে docker compose দিন
       - name: Run Unit Tests
-        run: docker-compose run -e CI=true app npm test
+        run: docker compose run -e CI=true app npm test
 
-      # Step 8: Cleanup
+      # Step 8: Cleanup স্টেপেও একই পরিবর্তন
       - name: Stop Containers
         if: always()
-        run: docker-compose down
+        run: docker compose down
