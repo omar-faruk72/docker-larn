@@ -7,7 +7,7 @@ export default function Home() {
       <p>
         Lorem ipsum dolor st consectetur adipisicing elit. Ab corporis
         laborum, asperiores inventore perspiciatis ullam incidunt debitis ipsa.
-        Earum veniam, magnam adipisci porro laudantium dignissimos autem ipsa
+        Earum veniamadas, magnam adipisci porro laudantium dignissimos autem ipsa
         repellat. Magnam, distinctio.
       </p>
       <h1>akdlka</h1>
