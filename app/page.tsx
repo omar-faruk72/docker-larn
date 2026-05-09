@@ -10,7 +10,6 @@ export default function Home() {
         Earum veniamadas, magnam adipisci porro laudantium dignissimos autem ipsa
         repellat. Magnam, distinctio.
       </p>
-      <h1>aksdadlka</h1>
       <p>adgfhtkal</p>
       <h1> oadla </h1>
     </div>
