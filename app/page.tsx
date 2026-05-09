@@ -11,6 +11,7 @@ export default function Home() {
         repellat. Magnam, distinctio.
       </p>
       <h1>akdlka</h1>
+      <h1>adlkal</h1>
     </div>
   );
 }
