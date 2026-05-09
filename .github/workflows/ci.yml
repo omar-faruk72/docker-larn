@@ -30,15 +30,13 @@ jobs:
       - name: TypeScript type check
         run: npx tsc --noEmit
 
-      # Step 6: এখানে docker-compose এর বদলে docker compose ব্যবহার করুন
       - name: Build with Docker Compose
         run: docker compose build
 
-      # Step 7: এখানেও docker-compose এর বদলে docker compose দিন
+      # সার্ভিস নাম web-app ব্যবহার করা হয়েছে
       - name: Run Unit Tests
-        run: docker compose run -e CI=true app npm test
+        run: docker compose run -e CI=true web-app npm test
 
-      # Step 8: Cleanup স্টেপেও একই পরিবর্তন
       - name: Stop Containers
         if: always()
         run: docker compose down
