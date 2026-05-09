@@ -34,4 +34,4 @@ COPY --from=builder /app/package.json ./package.json
 EXPOSE 3000
 
 # ৮. প্রজেক্ট চালু করার কমান্ড
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]

@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  # ১. আপনার Next.js অ্যাপ সার্ভিস
+  web-app:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development  
+    depends_on:
+      - database
+
+  # ২. একটি ডেটাবেজ সার্ভিস (উদাহরণস্বরূপ MongoDB)
+  database:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+# ডেটাবেজের ডেটা যাতে মুছে না যায় তার জন্য ভলিউম
+volumes:
+  mongo-data:
