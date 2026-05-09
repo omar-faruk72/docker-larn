@@ -1,0 +1,42 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  ci_logic:
+    name: Build & Test Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: TypeScript type check
+        run: npx tsc --noEmit
+
+      - name: Build with Docker Compose
+        run: docker compose build
+
+      # সার্ভিস নাম web-app ব্যবহার করা হয়েছে
+      - name: Run Unit Tests
+        run: docker compose run -e CI=true web-app npm test
+
+      - name: Stop Containers
+        if: always()
+        run: docker compose down

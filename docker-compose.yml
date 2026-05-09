@@ -4,6 +4,7 @@ services:
   # ১. আপনার Next.js অ্যাপ সার্ভিস
   web-app:
     build: .
+    image: docker-larn-image:latest
     ports:
       - "3000:3000"
     volumes:
