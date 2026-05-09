@@ -13,6 +13,7 @@ export default function Home() {
       <h1>akdlka</h1>
       <h1>adlkal</h1>
       <p>adlkal</p>
+      <h1> oadla </h1>
     </div>
   );
 }
