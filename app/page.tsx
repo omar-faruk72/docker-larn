@@ -5,7 +5,7 @@ export default function Home() {
     <div>
       <h1>kdak</h1>
       <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab corporis
+        Lorem ipsum dolor st consectetur adipisicing elit. Ab corporis
         laborum, asperiores inventore perspiciatis ullam incidunt debitis ipsa.
         Earum veniam, magnam adipisci porro laudantium dignissimos autem ipsa
         repellat. Magnam, distinctio.
