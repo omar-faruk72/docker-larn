@@ -10,6 +10,7 @@ export default function Home() {
         Earum veniam, magnam adipisci porro laudantium dignissimos autem ipsa
         repellat. Magnam, distinctio.
       </p>
+      <h1>akdlka</h1>
     </div>
   );
 }
