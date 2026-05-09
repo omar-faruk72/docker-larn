@@ -12,7 +12,7 @@ export default function Home() {
       </p>
       <h1>akdlka</h1>
       <h1>adlkal</h1>
-      <p>adlkal</p>
+      <p>adgfhtkal</p>
       <h1> oadla </h1>
     </div>
   );
