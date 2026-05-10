@@ -1,36 +1,7 @@
-name: CD Pipeline
-
-on:
-  push:
-    branches: [main] # শুধু মেইন ব্রাঞ্চে পুশ হলে এটি কাজ করবে
-
-jobs:
-  # ১. প্রথম জব: ডকার হাবে ইমেজ পুশ করা
-  docker_hub_push:
-    name: Push to Docker Hub
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build and Push Docker Image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/docker-larn:latest # 'docker-larn' এর বদলে আপনার ইমেজের নাম দিতে পারেন
-
-  # ২. দ্বিতীয় জব: ভেরসেলে কোড ডিপ্লয় করা
-  vercel_deploy:
+vercel_deploy:
     name: Deploy to Vercel
     runs-on: ubuntu-latest
-    needs: docker_hub_push # ডকার হাবে পুশ হওয়ার পর এটি শুরু হবে
+    needs: docker_hub_push
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -38,11 +9,18 @@ jobs:
       - name: Install Vercel CLI
         run: npm install --global vercel
 
+      # এখানে env ভেরিয়েবলগুলো যুক্ত করা হয়েছে যাতে Vercel আপনার প্রজেক্ট চিনতে পারে
       - name: Pull Vercel Project Info
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Build Project Artifacts
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Deploy Project to Vercel
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
