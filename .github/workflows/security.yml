@@ -1,0 +1,63 @@
+name: Security & Code Quality
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+  schedule:
+    - cron: '0 0 * * 1' # প্রতি সপ্তাহে একবার অটোমেটিক স্ক্যান হবে
+
+jobs:
+  security_scans:
+    name: Security Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ১. Dependency Vulnerability Scan (npm audit)
+      - name: NPM Audit check
+        run: npm audit --audit-level=high # শুধু হাই রিস্কগুলো ধরবে
+
+      # ২. Secret Scanning (TruffleHog ব্যবহার করে)
+      - name: Secret Scanning
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ""
+          head: HEAD
+          extra_args: --only-verified
+
+      # ৩. SAST - CodeQL (GitHub-এর নিজস্ব স্ট্যাটিক অ্যানালাইসিস)
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+
+      # ৪. Snyk Security Scan (Dependency & Code)
+      - name: Snyk Scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+
+  code_quality:
+    name: SonarQube & Quality Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # SonarQube-এর জন্য ফুল হিস্ট্রি দরকার
+
+      # ৫. SonarQube Analysis
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
